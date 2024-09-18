@@ -2,10 +2,9 @@ class ReservationsController < ApplicationController
   before_action :set_event
 
 
-  # POST /events/:event_id/rsvps
   def create
     @rsvp = @event.reservations.find_or_initialize_by(user: current_user)
-    @rsvp.status = true # You can adjust this logic based on how you want to handle RSVP status
+    @rsvp.status = true
 
     if @event.reservations.where(status: true).count < @event.capacity
       if @rsvp.save
@@ -18,7 +17,6 @@ class ReservationsController < ApplicationController
     end
   end
 
-  # DELETE /events/:event_id/rsvps/:id
   def destroy
     @rsvp = @event.reservations.find_by(user: current_user)
 
