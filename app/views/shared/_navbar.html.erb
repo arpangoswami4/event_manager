@@ -15,18 +15,10 @@
     <!-- Links for large screens -->
     <div class="hidden lg:flex space-x-4">
       <% if logged_in? %>
-        <li class="relative">
-          <button class="nav-link text-gray-700 font-medium focus:outline-none" @click="dropdownOpen = !dropdownOpen">
-            <%= @user.name %>
-              <svg class="inline w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-            </button>
-
-            <!-- Dropdown menu -->
-          <div x-show="dropdownOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10" @click.away="dropdownOpen = false">
-            <%= button_to 'Log-out', logout_user_path(@user.id), method: :delete, class: "block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100" %>
-          </div>
+        <div class="flex items-center gap-4">
+          <%= @user.name %>
+          <%= button_to 'Log-out', logout_user_path(@user.id), method: :delete, class: "block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" %>
+        </div>
         </li>
       <% else %>
         <%= link_to "Sign Up", new_user_path, class: "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" %>

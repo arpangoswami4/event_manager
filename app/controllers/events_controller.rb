@@ -17,7 +17,6 @@ class EventsController < ApplicationController
 
   # GET /events/1 or /events/1.json
   def show
-    @users_with_reservations = User.joins(:reservations)
   end
 
   # GET /events/new
@@ -75,6 +74,6 @@ class EventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:title, :description, :location, :capacity, :date, :time, :host)
+      params.require(:event).permit(:title, :description, :location, :capacity, :date, :time, :host, :banner)
     end
 end

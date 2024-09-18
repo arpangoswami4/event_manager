@@ -1,4 +1,4 @@
-<div id="<%= dom_id event %>">
+<div id="<%= dom_id event %>" class="p-8 border rounded-lg my-2 text-center">
   <p class="my-5">
     <strong class="block font-medium mb-1">Title:</strong>
     <%= event.title %>
@@ -14,24 +14,35 @@
     <%= event.location %>
   </p>
 
+  <% if event.banner.attached? %>
+    <div class="mb-5 flex justify-center flex-col items-center">
+      <strong class="block font-medium mb-2">Banner:</strong>
+      <%= image_tag event.banner, class: "max-w-60 max-h-60 rounded-lg shadow-lg" %>
+    </div>
+  <% end %>
+
   <p class="my-5">
     <strong class="block font-medium mb-1">Capacity:</strong>
     <%= event.capacity %>
   </p>
 
   <p class="my-5">
+    <strong class="block font-medium mb-1">Capacity:</strong>
+    <%= event.capacity - event.reservations.count %>
+  </p>
+
+  <p class="my-5">
     <strong class="block font-medium mb-1">Date:</strong>
-    <%= event.date %>
+    <%= event.date.strftime("%I:%M %p") %>
   </p>
 
   <p class="my-5">
     <strong class="block font-medium mb-1">Time:</strong>
-    <%= event.time %>
+    <%= event.time.strftime("%I:%M %p") %>
   </p>
 
   <p class="my-5">
     <strong class="block font-medium mb-1">Host:</strong>
     <%= event.host %>
   </p>
-
 </div>

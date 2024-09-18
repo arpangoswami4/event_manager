@@ -12,6 +12,7 @@ class User < ApplicationRecord
 
   has_many :reservations, dependent: :destroy
   has_many :events, through: :reservations
+  has_many :comments
 
 
 end

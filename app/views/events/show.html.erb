@@ -3,6 +3,9 @@
     <% if notice.present? %>
       <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
     <% end %>
+    <% if alert.present? %>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="notice"><%= alert %></p>
+    <% end %>
 
     <%= render @event %>
     <%= link_to "Back to events", events_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
@@ -18,12 +21,31 @@
       <%= button_to 'RSVP', event_reservations_path(@event), method: :post, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
     <% end %>
 
-    <div class="max-w-4xl mx-auto px-4 py-6">
+    <div class="mt-6">
+      <h2 class="text-lg font-semibold">Add a Comment</h2>
+      <%= form_with(model: [@event, Comment.new], local: true) do |form| %>
+        <div class="mt-2">
+          <%= form.label :content, "Comment", class: "block text-sm font-medium text-gray-700" %>
+          <%= form.text_area :content, rows: 4, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+        </div>
+        <div class="mt-4">
+          <%= form.submit "Add Comment", class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+        </div>
+      <% end %>
+    </div>
+    <div class="mt-6">
+    <% @event.comments.any? %>
+    <h2 class="text-lg font-semibold mb-6">Comments</h2>
+      <% @event.comments.order(created_at: :desc).each do |comment| %>
+        <div class="p-4 border rounded-lg mb-4">
+          <p class="font-semibold text-xl"><%= comment.user.name %> <br/><span class="text-gray-500 text-sm"><%= comment.created_at.strftime("%B %d, %Y %I:%M %p") %></span></p>
+          <p class=" text-xl"><%= comment.content %></p>
+        </div>
+    <% end %>
 
-
-  <% if @users_with_reservations.any? %>
+  <% if @event.reservations.includes(:user).any? %>
     <ul class="space-y-4">
-      <h1 class="text-3xl font-bold mb-4 text-gray-900">Attendees</h1>
+      <h1 class="text-3xl font-bold mb-4 text-gray-900 pt-10">Attendees</h1>
       <% @event.reservations.includes(:user).each do |reservation| %>
         <li class="bg-white border border-gray-200 rounded-lg shadow-md p-4 flex justify-between items-center">
           <div>
