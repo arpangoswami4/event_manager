@@ -10,14 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_18_041617) do
-  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name"
-    t.string "email"
-    t.string "password_digest"
-    t.integer "role"
+ActiveRecord::Schema[7.0].define(version: 2024_09_18_055437) do
+  create_table "events", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.string "location"
+    t.integer "capacity"
+    t.date "date"
+    t.time "time"
+    t.string "host"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "reservations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "event_id", null: false
+    t.boolean "status", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_reservations_on_event_id"
+    t.index ["user_id"], name: "index_reservations_on_user_id"
+  end
+
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "password_digest"
+    t.integer "role", default: 1
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "reservations", "events"
+  add_foreign_key "reservations", "users"
 end

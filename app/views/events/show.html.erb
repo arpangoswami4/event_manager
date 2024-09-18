@@ -1,0 +1,41 @@
+<div class="mx-auto md:w-2/3 w-full flex">
+  <div class="mx-auto">
+    <% if notice.present? %>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+    <% end %>
+
+    <%= render @event %>
+    <%= link_to "Back to events", events_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    <% if @user.admin?%>
+      <div class="inline-block ml-2">
+        <%= button_to "Destroy this event", @event, method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+      </div>
+      <%= link_to "Edit this event", edit_event_path(@event), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    <%end%>
+    <% if current_user.reservations.find_by(event: @event) %>
+      <%= button_to 'Cancel RSVP', event_reservations_path(@event), method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+    <% else %>
+      <%= button_to 'RSVP', event_reservations_path(@event), method: :post, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+    <% end %>
+
+    <div class="max-w-4xl mx-auto px-4 py-6">
+
+
+  <% if @users_with_reservations.any? %>
+    <ul class="space-y-4">
+      <h1 class="text-3xl font-bold mb-4 text-gray-900">Attendees</h1>
+      <% @event.reservations.includes(:user).each do |reservation| %>
+        <li class="bg-white border border-gray-200 rounded-lg shadow-md p-4 flex justify-between items-center">
+          <div>
+            <h2 class="text-xl font-semibold text-gray-800"><%= reservation.user.name %></h2>
+          </div>
+          <div>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-gray-500 mt-4">No users with reservations found.</p>
+  <% end %>
+</div>
+</div>

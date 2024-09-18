@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  location: MyString
+  capacity: 1
+  date: 2024-09-18
+  time: 2024-09-18 10:56:40
+  host: MyString
+
+two:
+  title: MyString
+  description: MyText
+  location: MyString
+  capacity: 1
+  date: 2024-09-18
+  time: 2024-09-18 10:56:40
+  host: MyString
