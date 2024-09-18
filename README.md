@@ -1,24 +1,8 @@
-# README
+This app uses ruby 3.0.0 and rails 7.0.2.4.
+The whole application is built using rails even for the front end and for styling tailwind css is used.
+For making any a User as admin, we can do it from the rails console. For example if the user records is has 5 as id.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Then,
+User.find(5).update_column(:role, 0)
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Would make the user admin. As the enum is used for role and 0 denotes admin.
