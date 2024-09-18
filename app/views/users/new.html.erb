@@ -1,0 +1,45 @@
+<div class="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+    <h1 class="text-3xl font-bold mb-6 text-center">Sign Up</h1>
+
+    <%= form_with model:@user, url: users_path, class: "space-y-6" do |form| %>
+
+        <!-- Error messages -->
+        <% if @user.errors.any? %>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+                <% @user.errors.full_messages.each do |m| %>
+                    <div><%= m %></div>
+                <% end %>
+            </div>
+        <% end %>
+
+        <!-- Name field -->
+        <div>
+            <%= form.label :name, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :name, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+        </div>
+
+        <!-- Email field -->
+        <div>
+            <%= form.label :email, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.email_field :email, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+        </div>
+
+        <!-- Password field -->
+        <div>
+            <%= form.label :password, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.password_field :password, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+        </div>
+
+        <!-- Password Confirmation field -->
+        <div>
+            <%= form.label :password_confirmation, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.password_field :password_confirmation, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+        </div>
+
+        <!-- Submit button -->
+        <div class="text-center">
+            <%= form.submit "Sign Up", class: "bg-blue-500 text-white font-semibold py-2 px-4 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+        </div>
+
+    <% end %>
+</div>
