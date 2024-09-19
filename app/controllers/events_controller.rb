@@ -4,6 +4,7 @@ class EventsController < ApplicationController
   def index
 
     @events = Event.all
+
     if params[:search_title].present?
       @events = @events.where('title LIKE ?', "%#{params[:search_title]}%")
     end
@@ -25,46 +26,40 @@ class EventsController < ApplicationController
   end
 
   def create
+
     @event = Event.new(event_params)
 
-    respond_to do |format|
-      if @event.save
-        format.html { redirect_to @event, notice: "Event was successfully created." }
-        format.json { render :show, status: :created, location: @event }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @event.errors, status: :unprocessable_entity }
-      end
+    if @event.save
+      redirect_to @event, notice: "Event was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
+
   end
 
   def update
-    respond_to do |format|
-      if @event.update(event_params)
-        format.html { redirect_to @event, notice: "Event was successfully updated." }
-        format.json { render :show, status: :ok, location: @event }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @event.errors, status: :unprocessable_entity }
-      end
+
+    if @event.update(event_params)
+      redirect_to @event, notice: "Event was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
+
   end
 
   def destroy
     @event.destroy
-
-    respond_to do |format|
-      format.html { redirect_to events_path, status: :see_other, notice: "Event was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    redirect_to events_path, status: :see_other, notice: "Event was successfully destroyed."
   end
 
   private
-    def set_event
-      @event = Event.find(params[:id])
-    end
 
-    def event_params
-      params.require(:event).permit(:title, :description, :location, :capacity, :date, :time, :host, :banner)
-    end
+  def set_event
+    @event = Event.find(params[:id])
+  end
+
+  def event_params
+    params.require(:event).permit(:title, :description, :location, :capacity, :date, :time, :host, :banner)
+  end
+
 end

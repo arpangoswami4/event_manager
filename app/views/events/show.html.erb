@@ -36,20 +36,20 @@
     <div class="mt-6">
     <% @event.comments.any? %>
     <h2 class="text-lg font-semibold mb-6">Comments</h2>
-      <% @event.comments.order(created_at: :desc).each do |comment| %>
+      <% @event.comments.includes(:user).order(created_at: :desc).each do |comment| %>
         <div class="p-4 border rounded-lg mb-4">
           <p class="font-semibold text-xl"><%= comment.user.name %> <br/><span class="text-gray-500 text-sm"><%= comment.created_at.strftime("%B %d, %Y %I:%M %p") %></span></p>
           <p class=" text-xl"><%= comment.content %></p>
         </div>
     <% end %>
 
-  <% if @event.reservations.includes(:user).any? %>
+  <% if @event.users.any? %>
     <ul class="space-y-4">
       <h1 class="text-3xl font-bold mb-4 text-gray-900 pt-10">Attendees</h1>
-      <% @event.reservations.includes(:user).each do |reservation| %>
+      <% @event.users.each do |user| %>
         <li class="bg-white border border-gray-200 rounded-lg shadow-md p-4 flex justify-between items-center">
           <div>
-            <h2 class="text-xl font-semibold text-gray-800"><%= reservation.user.name %></h2>
+            <h2 class="text-xl font-semibold text-gray-800"><%= user.name %></h2>
           </div>
           <div>
           </div>
@@ -57,7 +57,7 @@
       <% end %>
     </ul>
   <% else %>
-    <p class="text-gray-500 mt-4">No users with reservations found.</p>
+    <p class="text-gray-500 mt-4">No Attendees found.</p>
   <% end %>
 </div>
 </div>

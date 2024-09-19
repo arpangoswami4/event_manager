@@ -27,13 +27,13 @@
   </p>
 
   <p class="my-5">
-    <strong class="block font-medium mb-1">Capacity:</strong>
+    <strong class="block font-medium mb-1">Slots Left:</strong>
     <%= event.capacity - event.reservations.count %>
   </p>
 
   <p class="my-5">
     <strong class="block font-medium mb-1">Date:</strong>
-    <%= event.date.strftime("%I:%M %p") %>
+    <%= event.date.strftime("%A, %d-%b-%Y") %>
   </p>
 
   <p class="my-5">
