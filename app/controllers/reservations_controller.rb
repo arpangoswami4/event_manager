@@ -3,11 +3,10 @@ class ReservationsController < ApplicationController
 
 
   def create
-    @rsvp = @event.reservations.find_or_initialize_by(user: current_user)
-    @rsvp.status = true
+    @reservation = @event.reservations.find_or_initialize_by(user: current_user)
 
     if @event.reservations.where(status: true).count < @event.capacity
-      if @rsvp.save
+      if @reservation.save
         redirect_to @event, notice: 'RSVP confirmed!'
       else
         redirect_to @event, alert: 'Unable to RSVP. Please try again.'
@@ -18,10 +17,10 @@ class ReservationsController < ApplicationController
   end
 
   def destroy
-    @rsvp = @event.reservations.find_by(user: current_user)
+    @reservation = @event.reservations.find_by(user: current_user)
 
-    if @rsvp
-      @rsvp.destroy
+    if @reservation
+      @reservation.destroy
       redirect_to @event, notice: 'RSVP canceled.'
     else
       redirect_to @event, alert: 'RSVP not found.'

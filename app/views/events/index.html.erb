@@ -1,10 +1,4 @@
 <div class="w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-  <% end %>
-  <% if alert.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="notice"><%= alert %></p>
-    <% end %>
 
   <div class="flex flex-col justify-center items-center gap-8">
     <%= form_with(url: events_path, method: :get, local: true, class: "flex flex-wrap space-x-4") do %>
@@ -23,10 +17,10 @@
       </div>
     <% end %>
 
-    <div class="flex justify-between items-center">
+    <div class="flex flex-col justify-between gap-6 items-center">
       <h1 class="font-bold text-4xl mx-20">Events</h1>
-      <% if @user.admin?%>
-        <%= link_to "New event", new_event_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+      <% if is_user_admin? %>
+        <%= link_to "Add New event", new_event_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
       <% end %>
     </div>
 

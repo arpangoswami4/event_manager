@@ -13,8 +13,11 @@
 
   <body>
     <%= render partial: "shared/navbar" %>
-    <main class="container flex w-full">
-      <%= yield %>
+    <main class="flex flex-col w-full">
+      <%= render partial: "shared/flash"%>
+      <div class="my-8">
+        <%= yield %>
+      </div>
     </main>
   </body>
 </html>

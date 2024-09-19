@@ -2,10 +2,9 @@
 
 class User < ApplicationRecord
 
-
   enum role: %i[admin normal]
   validates :email, presence: true, uniqueness: true
-  validates :password, presence: true, length: { minimum: 6 }
+  validates :password, presence: true, length: { minimum: 6 }, if: :password_digest_changed?
   validates :name, presence: true
 
   has_secure_password

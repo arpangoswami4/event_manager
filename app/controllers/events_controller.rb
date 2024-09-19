@@ -16,6 +16,8 @@ class EventsController < ApplicationController
   end
 
   def show
+    @attendees = @event.users
+    @event_comments = @event.comments.includes(:user)
   end
 
   def new

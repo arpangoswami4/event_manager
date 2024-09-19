@@ -1,31 +1,42 @@
 <div class="mx-auto md:w-2/3 w-full flex">
   <div class="mx-auto">
-    <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-    <% end %>
-    <% if alert.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="notice"><%= alert %></p>
-    <% end %>
 
     <%= render @event %>
-    <%= link_to "Back to events", events_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <% if @user.admin?%>
-      <div class="inline-block ml-2">
-        <%= button_to "Destroy this event", @event, method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
-      </div>
-      <%= link_to "Edit this event", edit_event_path(@event), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%end%>
-    <% if current_user.reservations.find_by(event: @event) %>
-      <%= button_to 'Cancel RSVP', event_reservations_path(@event), method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+    <div class="grid grid-cols-2 gap-x-8 gap-y-4 p-4">
+      <%= link_to "Back to events", events_path, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+      <% if is_user_admin? %>
+        <%= link_to "Edit this event", edit_event_path(@event), class: "rounded-lg py-3 px-5 bg-yellow-200 inline-block font-medium" %>
+        <%= button_to "Destroy this event", @event, method: :delete, class: "rounded-lg py-3 px-5 bg-red-300 font-medium" %>
+      <%end%>
+
+      <% if @attendees.find_by(id: current_user) %>
+        <%= button_to 'Cancel RSVP', event_reservations_path(@event), method: :delete, class: "rounded-lg py-3 px-5 bg-orange-300 font-medium" %>
+      <% else %>
+        <%= button_to 'RSVP', event_reservations_path(@event), method: :post, class: "rounded-lg py-3 px-5 bg-green-300 font-medium" %>
+      <% end %>
+    </div>
+
+     <% if @attendees.present? %>
+      <ul class="space-y-4">
+        <h1 class="text-3xl font-bold mb-4 text-gray-900 pt-10">Attendees:</h1>
+        <% @attendees.each do |attendee| %>
+          <li class="bg-white border border-gray-200 rounded-lg shadow-md p-4 flex justify-between items-center">
+            <div>
+              <h2 class="text-xl font-semibold text-gray-800"><%= attendee.name %></h2>
+            </div>
+            <div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
     <% else %>
-      <%= button_to 'RSVP', event_reservations_path(@event), method: :post, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+      <p class="text-gray-500 mt-4">No Attendees yet RSVPed.</p>
     <% end %>
 
     <div class="mt-6">
-      <h2 class="text-lg font-semibold">Add a Comment</h2>
       <%= form_with(model: [@event, Comment.new], local: true) do |form| %>
         <div class="mt-2">
-          <%= form.label :content, "Comment", class: "block text-sm font-medium text-gray-700" %>
+          <%= form.label :content, "Comment:", class: "text-lg font-semibold" %>
           <%= form.text_area :content, rows: 4, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
         </div>
         <div class="mt-4">
@@ -33,31 +44,22 @@
         </div>
       <% end %>
     </div>
-    <div class="mt-6">
-    <% @event.comments.any? %>
-    <h2 class="text-lg font-semibold mb-6">Comments</h2>
-      <% @event.comments.includes(:user).order(created_at: :desc).each do |comment| %>
-        <div class="p-4 border rounded-lg mb-4">
-          <p class="font-semibold text-xl"><%= comment.user.name %> <br/><span class="text-gray-500 text-sm"><%= comment.created_at.strftime("%B %d, %Y %I:%M %p") %></span></p>
-          <p class=" text-xl"><%= comment.content %></p>
-        </div>
-    <% end %>
 
-  <% if @event.users.any? %>
-    <ul class="space-y-4">
-      <h1 class="text-3xl font-bold mb-4 text-gray-900 pt-10">Attendees</h1>
-      <% @event.users.each do |user| %>
-        <li class="bg-white border border-gray-200 rounded-lg shadow-md p-4 flex justify-between items-center">
-          <div>
-            <h2 class="text-xl font-semibold text-gray-800"><%= user.name %></h2>
-          </div>
-          <div>
-          </div>
-        </li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p class="text-gray-500 mt-4">No Attendees found.</p>
-  <% end %>
-</div>
+    <% if @event_comments.present? %>
+      <h2 class="text-2xl font-semibold mt-4 mb-2">Comments: </h2>
+      <% @event_comments.order(created_at: :desc).each do |comment| %>
+        <div class="p-4 border rounded-lg mb-4">
+          <p class="font-semibold text-2xl flex flex-col">
+            <%= comment.user.name %> <br/>
+            <span class="text-gray-500 text-xs">
+              <%= comment.created_at.strftime("%B %d, %Y %I:%M %p") %>
+            </span>
+          </p>
+          <p class="text-xl mt-4"><%= comment.content %></p>
+        </div>
+     <% end %>
+    <% else %>
+      <p class="text-gray-500 mt-4">No Comments added yet.</p>
+    <% end %>
+  </div>
 </div>
